@@ -30,14 +30,18 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
+const dashboardBg =
+  "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=80";
+
 
 function Dashboard() {
   function Copyright() {
     return (
+      
       <Typography variant="body2" color="textSecondary" align="center">
         {"Copyright © "}
         <Link color="inherit" href="https://material-ui.com/">
-          Fitkit
+        DriveFit
         </Link>{" "}
         {new Date().getFullYear()}
         {"."}

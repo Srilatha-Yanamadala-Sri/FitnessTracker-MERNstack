@@ -6,8 +6,7 @@ import Typography from "./Typography";
 import ProductHeroLayout from "./ProductHeroLayout";
 
 const backgroundImage =
-  "https://images.unsplash.com/photo-1551672746-89991811c186?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=889&q=80";
-
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80";
 const styles = (theme) => ({
   background: {
     backgroundImage: `url(${backgroundImage})`,

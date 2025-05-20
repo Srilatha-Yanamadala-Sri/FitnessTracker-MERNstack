@@ -74,7 +74,7 @@ export default function Exercises() {
       <Typography variant="body2" color="textSecondary" align="center">
         {"Copyright © "}
         <Link color="inherit" href="https://material-ui.com/">
-          Fitkit
+          DriveFit
         </Link>{" "}
         {new Date().getFullYear()}
         {"."}
