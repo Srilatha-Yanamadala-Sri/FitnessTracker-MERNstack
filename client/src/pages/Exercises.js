@@ -19,7 +19,7 @@ export default function Exercises() {
 
   React.useEffect(() => {
     axios
-      .get("https://fitness-tracker-mern.herokuapp.com/users")
+    .get(`${process.env.REACT_APP_API_BASE}/users`)
       .then((response) => {
         if (response.data.length > 0) {
           setUsers(response.data.map((user) => user.username));
@@ -59,7 +59,7 @@ export default function Exercises() {
 
     axios
       .post(
-        "https://fitness-tracker-mern.herokuapp.com/exercises/add/",
+      `${process.env.REACT_APP_API_BASE}/exercises/add/`,
         exercise
       )
       .then((res) => console.log(res.data));
