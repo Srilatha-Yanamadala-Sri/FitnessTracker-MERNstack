@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
@@ -12,10 +12,14 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 
+// Background image
+const dashboardBg =
+  "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=80";
+
+// Styled table cells and rows
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.primary.dark,
-
     color: theme.palette.common.white,
   },
   body: {
@@ -30,100 +34,96 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-const dashboardBg =
-  "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=80";
 
+// Styles
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundImage: `url(${dashboardBg})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    minHeight: "100vh",
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+  layout: {
+    width: "auto",
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+      width: 700,
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
+  },
+  paper: {
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    padding: theme.spacing(2),
+    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+      marginTop: theme.spacing(6),
+      marginBottom: theme.spacing(6),
+      padding: theme.spacing(3),
+    },
+  },
+  button: {
+    marginTop: theme.spacing(3),
+    marginLeft: theme.spacing(1),
+  },
+}));
 
-function Dashboard() {
-  function Copyright() {
-    return (
-      
-      <Typography variant="body2" color="textSecondary" align="center">
-        {"Copyright © "}
-        <Link color="inherit" href="https://material-ui.com/">
+// Copyright footer
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" href="https://material-ui.com/">
         DriveFit
-        </Link>{" "}
-        {new Date().getFullYear()}
-        {"."}
-      </Typography>
-    );
-  }
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
 
-  const useStyles = makeStyles((theme) => ({
-    appBar: {
-      position: "relative",
-    },
-    layout: {
-      width: "auto",
-      marginLeft: theme.spacing(2),
-      marginRight: theme.spacing(2),
-      [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-        width: 700,
-        marginLeft: "auto",
-        marginRight: "auto",
-      },
-    },
-    paper: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(3),
-      padding: theme.spacing(2),
-      [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-        marginTop: theme.spacing(6),
-        marginBottom: theme.spacing(6),
-        padding: theme.spacing(3),
-      },
-    },
-    stepper: {
-      padding: theme.spacing(3, 0, 5),
-    },
-    buttons: {
-      display: "flex",
-      justifyContent: "flex-end",
-    },
-    button: {
-      marginTop: theme.spacing(3),
-      marginLeft: theme.spacing(1),
-    },
-  }));
-
+// Dashboard component
+function Dashboard() {
+  const classes = useStyles();
   const [exercises, setExercises] = useState([]);
 
-    // ...existing code...
-  
-  React.useEffect(() => {
+  useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_BASE}/exercises`)
       .then((response) => {
         setExercises(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.error("Failed to fetch exercises:", error);
       });
   }, []);
-  
+
   const deleteExercise = (id) => {
     axios
       .delete(`${process.env.REACT_APP_API_BASE}/exercises/${id}`)
-      .then((response) => {
-        console.log(response.data);
+      .then(() => {
+        const updatedList = exercises.filter((el) => el._id !== id);
+        setExercises(updatedList);
+      })
+      .catch((error) => {
+        console.error("Failed to delete exercise:", error);
       });
-    const del = exercises.filter((el) => el._id !== id);
-    setExercises(del);
   };
-  
-  // ...existing code...
-
-  const classes = useStyles();
 
   return (
-    <React.Fragment>
+    <div className={classes.root}>
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography variant="h6" gutterBottom>
             Dashboard
           </Typography>
           <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label="customized table">
+            <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
                   <StyledTableCell>Users</StyledTableCell>
@@ -146,7 +146,7 @@ function Dashboard() {
                       {row.duration}
                     </StyledTableCell>
                     <StyledTableCell align="right">
-                      {row.date.substring(0, 10)}
+                      {row.date?.substring(0, 10)}
                     </StyledTableCell>
                     <StyledTableCell align="right">
                       <Button
@@ -164,7 +164,8 @@ function Dashboard() {
         </Paper>
       </main>
       <Copyright />
-    </React.Fragment>
+    </div>
   );
 }
+
 export default Dashboard;
