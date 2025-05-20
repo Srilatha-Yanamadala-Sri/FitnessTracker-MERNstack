@@ -84,9 +84,11 @@ function Dashboard() {
 
   const [exercises, setExercises] = useState([]);
 
+    // ...existing code...
+  
   React.useEffect(() => {
     axios
-      .get("https://fitness-tracker-mern.herokuapp.com/exercises")
+      .get(`${process.env.REACT_APP_API_BASE}/exercises`)
       .then((response) => {
         setExercises(response.data);
       })
@@ -94,16 +96,18 @@ function Dashboard() {
         console.log(error);
       });
   }, []);
-
+  
   const deleteExercise = (id) => {
     axios
-      .delete("https://fitness-tracker-mern.herokuapp.com/exercises/" + id)
+      .delete(`${process.env.REACT_APP_API_BASE}/exercises/${id}`)
       .then((response) => {
         console.log(response.data);
       });
     const del = exercises.filter((el) => el._id !== id);
     setExercises(del);
   };
+  
+  // ...existing code...
 
   const classes = useStyles();
 
