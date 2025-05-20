@@ -71,7 +71,7 @@ export default function User({ onUserAdded }) {
     setMessage("");
     setIsError(false);
 
-    axios.get("http://localhost:5000/users")
+    axios.get("https://fitnesstracker-mernstack-1.onrender.com/users/")
       .then(res => {
         const userExists = res.data.some(user => user.username === username);
         if (userExists) {
@@ -79,7 +79,7 @@ export default function User({ onUserAdded }) {
           setMessage("Username already exists. Please choose a different one.");
           return null; // stop here
         }
-        return axios.post("http://localhost:5000/users/add", { username });
+return axios.post("https://fitnesstracker-mernstack-1.onrender.com/users/add", { username });
       })
       .then(res => {
         if (res) {
